@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table with Loop</title>
+    <style>
+        /* Ensure the body takes full screen size */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation bar styling */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            height: 50px; /* Fixed height for navigation bar */
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-left button, .logout-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-left button:hover, .logout-btn:hover {
+            background-color: #444;
+        }
+
+        /* Main content layout */
+        .main-content {
+            display: flex;
+            height: calc(100vh - 50px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Left column split into two rows */
+        .left-column {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent content overflow */
+        }
+
+        .left-row {
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid black;
+            box-sizing: border-box;
+        }
+
+        .left-row:first-child {
+            flex-grow: 1;
+            margin-bottom: 10px;
+            overflow: auto; /* Enable scroll if table is too large */
+        }
+
+        .left-row:last-child {
+            flex-basis: 10%;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-sizing: border-box;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Form styling remains unchanged */
+        .order-details-header {
+            margin-bottom: 10px;
+        }
+
+        .bottom-row-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            align-items: center;
+            flex-grow: 1;
+            align-items: flex-start;
+        }
+
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .field-container select, .field-container input[type="text"], .field-container input[type="number"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .field-container input[type="text"].security-name-input {
+            width: 250px;
+        }
+
+        .field-label {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .place-order-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .place-order-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Right column styling remains unchanged */
+        .right-column {
+            width: 20%;
+            background-color: #e0e0e0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden; /* Prevent content overflow */
+        }
+
+        .right-box-row {
+            flex-grow: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: 2px solid black;
+            margin: 10px;
+            overflow: hidden; /* Prevent content overflow */
+        }
+
+        .clickable-row {
+            cursor: pointer;
+        }
+
+          .order-book-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .order-book-table th, .order-book-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .order-book-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <div class="nav-left">
+        <button>Mr. Kedar</button>
+        <button>Home</button>
+        <button>Charts</button>
+        <button>Orders</button>
+        <button>Portfolio</button>
+        <button>News</button>
+    </div>
+    <button class="logout-btn">Logout</button>
+</div>
+
+<div class="main-content">
+    <!-- Left column with two rows -->
+    <div class="left-column">
+        <div class="left-row">
+            <!-- Table to display bond data -->
+             <table>
+                <thead>
+                    <tr>
+                        <th>Security Name</th>
+                        <th>Maturity Dt</th>
+                        <th>S Mkt</th>
+                        <th>Bid Amt</th>
+                        <th>Bid Yield</th>
+                        <th>Bid Price</th>
+                        <th>Offer Price</th>
+                        <th>Offer Yield</th>
+                        <th>Offer Amt</th>
+                        <th>LTP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <script>
+                        const tableData = [
+                            { securityName: "06.10 GS 2031", maturityDt: "12 JUL 2031", sMkt: "OD", bidAmt: "0.0800", bidYield: "6.3608", bidPrice: "98.1400", offerPrice: "98.1700", offerYield: "6.3565", offerAmt: "0.0030", ltp: "98.1400" },
+                            { securityName: "05.63 GS 2026", maturityDt: "12 APR 2026", sMkt: "OD", bidAmt: "0.4400", bidYield: "5.6935", bidPrice: "99.7500", offerPrice: "99.7800", offerYield: "5.6856", offerAmt: "0.2000", ltp: "99.7600" },
+                            { securityName: "06.95 GS 2061", maturityDt: "16 DEC 2061", sMkt: "OD", bidAmt: "-", bidYield: "-", bidPrice: "-", offerPrice: "100.3000", offerYield: "6.9280", offerAmt: "6.0160", ltp: "#" },
+                             { securityName: "06.67 GS 2035", maturityDt: "15 DEC 2035", sMkt: "OD", bidAmt: "#", bidYield: "1.0000", bidPrice: "6.7469", offerPrice: "99.3100", offerYield: "99.3500", offerAmt: "6.7424", ltp: "2.6540" }
+                        ];
+
+                        for (let i = 0; i < tableData.length; i++) {
+                            document.write(`<tr class="clickable-row" onclick="fillForm('${tableData[i].securityName}', '${tableData[i].ltp}')">
+                                <td>${tableData[i].securityName}</td>
+                                <td>${tableData[i].maturityDt}</td>
+                                <td>${tableData[i].sMkt}</td>
+                                <td>${tableData[i].bidAmt}</td>
+                                <td>${tableData[i].bidYield}</td>
+                                <td>${tableData[i].bidPrice}</td>
+                                <td>${tableData[i].offerPrice}</td>
+                                <td>${tableData[i].offerYield}</td>
+                                <td>${tableData[i].offerAmt}</td>
+                                <td>${tableData[i].ltp}</td>
+                            </tr>`);
+                        }
+                    </script>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Second row with the form -->
+        <div class="left-row">
+            <div class="order-details-header">Enter Order Details</div>
+            <div class="bottom-row-container">
+                <div class="field-container">
+                    <div class="field-label">Bid/Offer Type</div>
+                    <select>
+                        <option value="bid">Bid</option>
+                        <option value="offer">Offer</option>
+                    </select>
+                </div>
+                <div class="field-container">
+                    <div class="field-label">Security Name</div>
+                    <input type="text" id="securityNameInput" class="security-name-input" placeholder="Security Name">
+                </div>
+                <div class="field-container">
+                    <div class="field-label">Quantity</div>
+                    <input type="number" placeholder="Quantity" min="1" step="1">
+                </div>
+                <div class="field-container">
+                    <div class="field-label">Price</div>
+                    <input type="number" id = "priceInput" placeholder="Price" step="0.01">
+                </div>
+                <div class="field-container">
+                    <div class="field-label">Order Type</div>
+                    <select>
+                        <option value="lmt">Limit</option>
+                        <option value="mkt">Market</option>
+                    </select>
+                </div>
+                <button class="place-order-btn">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right column with three boxes -->
+    <div class="right-column">
+        <div class="right-box-row">
+            <h3>Profit and Loss</h3>
+            <p>Summary of financial performance.</p>
+        </div>
+        <div class="right-box-row">
+            <h3>Order Book</h3>
+            <p>Details of current orders.</p>
+        </div>
+        <div class="right-box-row">
+            <h3>News</h3>
+            <p>Latest news updates.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fillForm(securityName, ltp) {
+        document.getElementById("securityNameInput").value = securityName;
+        document.getElementById("priceInput").value = ltp;
+    }
+</script>
+
+</body>
+</html>
