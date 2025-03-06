@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Market Selection{% endblock %}
+{% block content %}
+    <h2>Select a Market</h2>
+    <ul>
+        <li><a href="{{ url_for('primary_market') }}">Primary Market</a></li>
+        <li><a href="{{ url_for('secondary_market') }}">Secondary Market</a></li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table with Loop</title>
+    <style>
+        /* Ensure the body takes full screen size */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            font-size: 16px; /* Consistent base font size */
+        }
+
+        /* Responsive container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Navigation bar styling */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 0.5em 1em; /* Adjusted padding */
+            height: 50px; /* Fixed height for the navbar */
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 0.5em; /* Reduced gap */
+        }
+
+        .nav-left button, .logout-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.3em 0.5em; /* Adjusted padding */
+            transition: background-color 0.3s ease;
+            font-size: inherit; /* Inherit font size */
+        }
+
+        .nav-left button:hover, .logout-btn:hover {
+            background-color: #444;
+        }
+
+        /* Main content layout */
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            padding: 0; /* No padding for main content */
+            box-sizing: border-box;
+            height: calc(100vh - 50px); /* Adjust height based on navbar */
+        }
+
+        /* Left column styling */
+        .left-column {
+            width: 80vw; /* 80% of the viewport width */
+            height: 100%; /* Full height of the main content */
+            display: flex;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            padding: 0.5em; /* Padding for the left column */
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Right column styling */
+        .right-column {
+            width: 20vw; /* 20% of the viewport width */
+            height: 100%; /* Full height of the main content */
+            background-color: #e0e0e0;
+            padding: 0.5em; /* Padding for the right column */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Row styling for left column */
+        .left-row {
+            border-radius: 0.5em;
+            border: 2px solid black;
+            box-sizing: border-box;
+            margin-bottom: 0.5em; /* Space between rows */
+            padding: 0.5em; /* Padding inside each row */
+            flex: 1; /* Allow rows to grow equally */
+        }
+
+        .left-row:first-child {
+            flex: 0 0 75%; /* 75% of the height */
+            overflow: hidden; /* Prevent overflow */
+        }
+
+        .left-row:nth-child(2) {
+            flex: 0 0 10%; /* 10% of the height */
+        }
+
+        .left-row:nth-child(3) {
+            flex: 0 0 10%; /* 10% of the height */
+        }
+
+        /* Table container for scrolling */
+        .table-container {
+            height: 100%; /* Take full height of the row */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: inherit; /* Inherit font size */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.4em;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .right-box-row {
+            flex: 0 0 calc((100vh - 50px) / 3); /* Each row takes 1/3 of the right column height */
+            padding: 0.4em; /* Padding inside each row */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            border-radius: 0.5em; /* Rounded corners */
+            border: 2px solid black; /* Border styling */
+            margin: 0.5em 0; /* Margin for spacing */
+            overflow: hidden; /* Prevent overflow of content */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: flex-start; /* Align children to the start of the flex container */
+        }
+
+        .right-box-row h3 {
+            font-size: inherit; /* Inherit font size */
+        }
+
+        .right-box-row p {
+            font-size: inherit; /* Inherit font size */
+        }
+
+        .clickable-row {
+            cursor: pointer;
+        }
+
+        .place-order-btn {
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 0.3em;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: inherit; /* Inherit font size */
+        }
+
+        .place-order-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Form styling for horizontal layout */
+        .form-horizontal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em; /* Space between fields */
+            align-items: center; /* Center align items vertically */
+        }
+
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1; /* Allow fields to grow equally */
+        }
+
+        .field-label {
+            font-size: inherit; /* Inherit font size */
+            margin-bottom: 0.3em; /* Responsive margin */
+        }
+
+        .field-container select,
+        .field-container input[type="text"],
+        .field-container input[type="number"] {
+            padding: 0.3em; /* Responsive padding */
+            border-radius: 0.3em; /* Responsive border-radius */
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: inherit; /* Inherit font size */
+        }
+
+        /* News container styling */
+        .news-container {
+            height: 150px; /* Set a fixed height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 0.5em; /* Padding for aesthetics */
+            border: 1px solid #ddd; /* Optional: border for better visibility */
+            background-color: #f9f9f9; /* Optional: background color */
+            margin-top: 0.5em; /* Reduced margin above the news box */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-bar">
+        <div class="nav-left">
+            <a href="#"><button>Mr. Kedar</button></a>
+            <a href="#"><button>Home</button></a>
+            <a href="#"><button>Charts</button></a>
+            <a href="#"><button>Get Orders</button></a> <!-- Updated button text -->
+            <a href="#"><button>Portfolio</button></a>
+            <a href="#"><button>News</button></a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#"><button class="logout-btn">Logout</button></a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="left-column">
+            <div class="left-row">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr id="table-headers">
+                            <!-- Dynamic headers will be inserted here -->
+                        </tr>
+                        </thead>
+                        <tbody id="bond-data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="left-row">
+                <div class="order-details-header">Enter Order Details</div>
+                <div class="bottom-row-container form-horizontal">
+                    <div class="field-container">
+                        <div class="field-label">Bid/Offer Type</div>
+                        <select>
+                            <option value="bid">Bid</option>
+                            <option value="offer">Offer</option>
+                        </select>
+                    </div>
+                    <div class="field-container">
+                        <div class="field-label">Security Name</div>
+                        <input type="text" id="securityNameInput" class="security-name-input" placeholder="Security Name">
+                    </div>
+                    <div class="field-container">
+                        <div class="field-label">Quantity</div>
+                        <input type="number" placeholder="Quantity" min="1" step="1">
+                    </div>
+                    <div class="field-container">
+                        <div class="field-label">Price</div>
+                        <input type="number" id="priceInput" placeholder="Price" step="0.01">
+                    </div>
+                    <div class="field-container">
+                        <div class="field-label">Order Type</div>
+                        <select>
+                            <option value="lmt">Limit</option>
+                            <option value="mkt">Market</option>
+                        </select>
+                    </div>
+                    <button class="place-order-btn">Place Order</button>
+                </div>
+            </div>
+
+            <div class="left-row">
+                <div class="order-details-header">News</div>
+                <div class="bottom-row-container news-container">
+                    <p id="news-content">Loading news...</p> <!-- Placeholder for news content -->
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="right-box-row">
+                <h3>Profit and Loss</h3>
+                <p>Summary of financial performance.</p>
+            </div>
+            <div class="right-box-row">
+                <h3>Order Book</h3>
+                <div class="table-container">
+                    <table class="order-book-table">
+                        <thead>
+                        <tr id="order-book-headers">
+                            <!-- Dynamic headers will be inserted here -->
+                        </tr>
+                        </thead>
+                        <tbody id="order-book-data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right-box-row">
+                <h3>Chart</h3>
+                <p>Chart data and visualizations will be displayed here.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const BASE_URL = 'https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io'; // Base URL constant
+
+    // Function to fetch bond data from the API
+    async function fetchBondData() {
+        try {
+            const response = await fetch(`${BASE_URL}/getbonds`); // Updated endpoint
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            return data.bonds; // Return the bonds array
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            return []; // Return an empty array on error
+        }
+    }
+
+    // Function to fetch order book data from the API
+    async function fetchOrderBookData() {
+        try {
+            const response = await fetch(`${BASE_URL}/getorderbook`); // Updated endpoint
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            return data.orderbook; // Return the orderbook array
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            return []; // Return an empty array on error
+        }
+    }
+
+    // Function to fetch news data from the API
+    async function fetchNews() {
+        try {
+            const response = await fetch(`${BASE_URL}/getnews`); // Updated endpoint
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            return data.news; // Return the news string
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            return 'Failed to load news.'; // Return a fallback message on error
+        }
+    }
+
+    async function fillTable() {
+        const bondDataElement = document.getElementById('bond-data');
+        const tableHeadersElement = document.getElementById('table-headers');
+        const bonds = await fetchBondData(); // Fetch bond data
+
+        // Set table headers dynamically based on the first bond object
+        if (bonds.length > 0) {
+            Object.keys(bonds[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key; // Set header text
+                tableHeadersElement.appendChild(th); // Append to the header row
+            });
+        }
+
+        // Populate the table body with bond data
+        bonds.forEach(item => {
+            const row = document.createElement('tr');
+            row.className = "clickable-row";
+            row.onclick = () => fillForm(item['Security Name'], item['LTP']);
+            Object.values(item).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value; // Set cell text
+                row.appendChild(td); // Append to the row
+            });
+            bondDataElement.appendChild(row); // Append the row to the table body
+        });
+    }
+
+    async function fillOrderBook() {
+        const orderBookDataElement = document.getElementById('order-book-data');
+        const orderBookHeadersElement = document.getElementById('order-book-headers');
+        const orderbook = await fetchOrderBookData(); // Fetch order book data
+
+        // Set table headers dynamically based on the first order book object
+        if (orderbook.length > 0) {
+            Object.keys(orderbook[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key; // Set header text
+                orderBookHeadersElement.appendChild(th); // Append to the header row
+            });
+        }
+
+        // Populate the table body with order book data
+        orderbook.forEach(item => {
+            const row = document.createElement('tr');
+            Object.values(item).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value; // Set cell text
+                row.appendChild(td); // Append to the row
+            });
+            orderBookDataElement.appendChild(row); // Append the row to the table body
+        });
+    }
+
+    async function fillNews() {
+        const newsContentElement = document.getElementById('news-content');
+        const news = await fetchNews(); // Fetch news data
+        newsContentElement.textContent = news; // Set the news content
+    }
+
+    function fillForm(securityName, ltp) {
+        document.getElementById("securityNameInput").value = securityName;
+        document.getElementById("priceInput").value = ltp;
+    }
+
+    // Call fillTable, fillOrderBook, and fillNews on page load
+    window.onload = async () => {
+        await fillTable();
+        await fillOrderBook();
+        await fillNews(); // Fetch and display news
+    };
+</script>
+
+</body>
+</html>
