@@ -377,8 +377,11 @@
 
             <div class="right-column">
                 <div class="right-box-row">
-                    <h3>Profit and Loss</h3>
-                    <p>Summary of financial performance.</p>
+                    <h3>Summary</h3>
+                 
+                   
+                    <p id="realised-gain">Realised P/L: Loading...</p>
+                    <p id="balance" >Balance: Loading...</p>
                 </div>
                 <div class="right-box-row">
                     <h3>Order Book</h3>
@@ -571,7 +574,35 @@
         }
 
         // Function to fetch PnL data from the API
+        async function fetchPnLData() {
+            try {
+                const response = await fetch(`${BASE_URL}/getpnl`); // Updated endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                return data.pnl; // Return the PnL data
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                return { realised: 'Error', balance: 'Error' }; // Return error structure on error
+            }
+        }
 
+        // Function to display PnL data
+        async function displayPnL() {
+            const pnlData = await fetchPnLData();
+            const pnlElement = document.getElementById('pnl-display');
+            const realisedGainElement = document.getElementById('realised-gain');
+    const balanceElement = document.getElementById('balance');
+
+    realisedGainElement.textContent = `Realised P/L: ${pnlData.realised}`;
+    balanceElement.textContent = `Balance: ${pnlData.balance}`;
+
+    realisedGainElement.style.color = pnlData.realised >= 0 ? 'green' : 'red';
+    balanceElement.style.color = pnlData.balance >= 0 ? 'green' : 'red';
+        }
+
+        // Function to fetch chart data from the API
         async function fetchChartData() {
             try {
                 const response = await fetch(`${BASE_URL}/getchart`); // Updated endpoint
@@ -628,9 +659,10 @@
         // Call fillTable, fillOrderBook, fillNews, renderChart, and displayPnL on page load
         window.onload = async () => {
             await fillTable();
-            await renderChart()
+            await renderChart();
             await fillOrderBook();
             await fillNews(); // Fetch and display news
+            await displayPnL(); // Fetch and display PnL data
         };
     </script>
 
