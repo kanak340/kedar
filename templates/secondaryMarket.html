@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table with Loop</title>
     <style>
         /* Ensure the body takes full screen size */
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            font-size: 16px; /* Consistent base font size */
+            font-size: 16px;
+            /* Consistent base font size */
         }
 
         /* Responsive container */
@@ -30,26 +33,33 @@
             align-items: center;
             background-color: #333;
             color: white;
-            padding: 0.5em 1em; /* Adjusted padding */
-            height: 50px; /* Fixed height for the navbar */
+            padding: 0.5em 1em;
+            /* Adjusted padding */
+            height: 50px;
+            /* Fixed height for the navbar */
         }
 
         .nav-left {
             display: flex;
-            gap: 0.5em; /* Reduced gap */
+            gap: 0.5em;
+            /* Reduced gap */
         }
 
-        .nav-left button, .logout-btn {
+        .nav-left button,
+        .logout-btn {
             background-color: transparent;
             border: none;
             color: white;
             cursor: pointer;
-            padding: 0.3em 0.5em; /* Adjusted padding */
+            padding: 0.3em 0.5em;
+            /* Adjusted padding */
             transition: background-color 0.3s ease;
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
-        .nav-left button:hover, .logout-btn:hover {
+        .nav-left button:hover,
+        .logout-btn:hover {
             background-color: #444;
         }
 
@@ -57,29 +67,37 @@
         .main-content {
             display: flex;
             flex-grow: 1;
-            padding: 0; /* No padding for main content */
+            padding: 0;
+            /* No padding for main content */
             box-sizing: border-box;
-            height: calc(100vh - 50px); /* Adjust height based on navbar */
+            height: calc(100vh - 50px);
+            /* Adjust height based on navbar */
         }
 
         /* Left column styling */
         .left-column {
-            width: 80vw; /* 80% of the viewport width */
-            height: 100%; /* Full height of the main content */
+            width: 80vw;
+            /* 80% of the viewport width */
+            height: 100%;
+            /* Full height of the main content */
             display: flex;
             flex-direction: column;
             background-color: #f0f0f0;
-            padding: 0.5em; /* Padding for the left column */
+            padding: 0.5em;
+            /* Padding for the left column */
             box-sizing: border-box;
             overflow: hidden;
         }
 
         /* Right column styling */
         .right-column {
-            width: 20vw; /* 20% of the viewport width */
-            height: 100%; /* Full height of the main content */
+            width: 20vw;
+            /* 20% of the viewport width */
+            height: 100%;
+            /* Full height of the main content */
             background-color: #e0e0e0;
-            padding: 0.5em; /* Padding for the right column */
+            padding: 0.5em;
+            /* Padding for the right column */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -91,40 +109,51 @@
             border-radius: 0.5em;
             border: 2px solid black;
             box-sizing: border-box;
-            margin-bottom: 0.5em; /* Space between rows */
-            padding: 0.5em; /* Padding inside each row */
-            flex: 1; /* Allow rows to grow equally */
+            margin-bottom: 0.5em;
+            /* Space between rows */
+            padding: 0.5em;
+            /* Padding inside each row */
+            flex: 1;
+            /* Allow rows to grow equally */
         }
 
         .left-row:first-child {
-            flex: 0 0 75%; /* 75% of the height */
-            overflow: hidden; /* Prevent overflow */
+            flex: 0 0 75%;
+            /* 75% of the height */
+            overflow: hidden;
+            /* Prevent overflow */
         }
 
         .left-row:nth-child(2) {
             overflow-y: scroll;
-            flex: 0 0 10%; /* 10% of the height */
+            flex: 0 0 10%;
+            /* 10% of the height */
         }
 
         .left-row:nth-child(3) {
             overflow-y: scroll;
-            flex: 0 0 10%; /* 10% of the height */
+            flex: 0 0 10%;
+            /* 10% of the height */
         }
 
         /* Table container for scrolling */
         .table-container {
-            height: 100%; /* Take full height of the row */
-            overflow-y: auto; /* Enable vertical scrolling */
+            height: 100%;
+            /* Take full height of the row */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
         }
 
         /* Table styling */
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 0.4em;
             text-align: left;
@@ -136,24 +165,36 @@
         }
 
         .right-box-row {
-            flex: 0 0 calc((100vh - 100px) / 3); /* Each row takes 1/3 of the right column height */
-            padding: 0.4em; /* Padding inside each row */
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
-            border-radius: 0.5em; /* Rounded corners */
-            border: 2px solid black; /* Border styling */
-            margin: 0.5em 0; /* Margin for spacing */
-            overflow: hidden; /* Prevent overflow of content */
-            display: flex; /* Use flexbox for layout */
-            flex-direction: column; /* Stack children vertically */
-            justify-content: flex-start; /* Align children to the start of the flex container */
+            flex: 0 0 calc((100vh - 100px) / 3);
+            /* Each row takes 1/3 of the right column height */
+            padding: 0.4em;
+            /* Padding inside each row */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+            border-radius: 0.5em;
+            /* Rounded corners */
+            border: 2px solid black;
+            /* Border styling */
+            margin: 0.5em 0;
+            /* Margin for spacing */
+            overflow: hidden;
+            /* Prevent overflow of content */
+            display: flex;
+            /* Use flexbox for layout */
+            flex-direction: column;
+            /* Stack children vertically */
+            justify-content: flex-start;
+            /* Align children to the start of the flex container */
         }
 
         .right-box-row h3 {
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
         .right-box-row p {
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
         .clickable-row {
@@ -167,7 +208,8 @@
             background-color: #007bff;
             color: white;
             cursor: pointer;
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
         .place-order-btn:hover {
@@ -178,40 +220,54 @@
         .form-horizontal {
             display: flex;
             flex-wrap: wrap;
-            gap: 1em; /* Space between fields */
-            align-items: center; /* Center align items vertically */
+            gap: 1em;
+            /* Space between fields */
+            align-items: center;
+            /* Center align items vertically */
         }
 
         .field-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            flex: 1; /* Allow fields to grow equally */
+            flex: 1;
+            /* Allow fields to grow equally */
         }
 
         .field-label {
-            font-size: inherit; /* Inherit font size */
-            margin-bottom: 0.3em; /* Responsive margin */
+            font-size: inherit;
+            /* Inherit font size */
+            margin-bottom: 0.3em;
+            /* Responsive margin */
         }
 
         .field-container select,
         .field-container input[type="text"],
         .field-container input[type="number"] {
-            padding: 0.3em; /* Responsive padding */
-            border-radius: 0.3em; /* Responsive border-radius */
+            padding: 0.3em;
+            /* Responsive padding */
+            border-radius: 0.3em;
+            /* Responsive border-radius */
             border: 1px solid #ccc;
             box-sizing: border-box;
-            font-size: inherit; /* Inherit font size */
+            font-size: inherit;
+            /* Inherit font size */
         }
 
         /* News container styling */
         .news-container {
-            height: 150px; /* Set a fixed height */
-            overflow-y: auto; /* Enable vertical scrolling */
-            padding: 0.5em; /* Padding for aesthetics */
-            border: 1px solid #ddd; /* Optional: border for better visibility */
-            background-color: #f9f9f9; /* Optional: background color */
-            margin-top: 0.5em; /* Reduced margin above the news box */
+            height: 150px;
+            /* Set a fixed height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            padding: 0.5em;
+            /* Padding for aesthetics */
+            border: 1px solid #ddd;
+            /* Optional: border for better visibility */
+            background-color: #f9f9f9;
+            /* Optional: background color */
+            margin-top: 0.5em;
+            /* Reduced margin above the news box */
         }
 
         /* Popup and Overlay Styles */
@@ -222,8 +278,10 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            display: none; /* Hidden by default */
-            z-index: 1000; /* Ensure it is above other content */
+            display: none;
+            /* Hidden by default */
+            z-index: 1000;
+            /* Ensure it is above other content */
         }
 
         .popup {
@@ -235,282 +293,291 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1001; /* Ensure it is above the overlay */
-            display: none; /* Hidden by default */
+            z-index: 1001;
+            /* Ensure it is above the overlay */
+            display: none;
+            /* Hidden by default */
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="nav-bar">
-        <div class="nav-left">
-            <a href="#"><button>Mr. Kedar</button></a>
-            <a href="#"><button>Home</button></a>
-            <a href="#"><button>Charts</button></a>
-            <a href="#"><button>Get Orders</button></a>
-            <a href="#"><button>Portfolio</button></a>
-            <a href="#"><button onclick="openPopup()">News</button></a> <!-- Updated button to open popup -->
+    <div class="container">
+        <div class="nav-bar">
+            <div class="nav-left">
+                <a href="#"><button>Mr. Kedar</button></a>
+                <a href="#"><button>Home</button></a>
+                <a href="#"><button>Charts</button></a>
+                <a href="#"><button>Get Orders</button></a>
+                <a href="#"><button>Portfolio</button></a>
+                <a href="#"><button>Portfolio</button></a>
+                <a href="#"><button onclick="openPopup()">Calculate</button></a> <!-- Updated button to open popup -->
+            </div>
+
+            <div class="nav-right">
+                <a href="#"><button class="logout-btn">Logout</button></a>
+            </div>
         </div>
 
-        <div class="nav-right">
-            <a href="#"><button class="logout-btn">Logout</button></a>
+        <div class="main-content">
+            <div class="left-column">
+                <div class="left-row">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr id="table-headers">
+                                    <!-- Dynamic headers will be inserted here -->
+                                </tr>
+                            </thead>
+                            <tbody id="bond-data">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="left-row">
+                    <div class="bottom-row-container form-horizontal">
+                        <div class="field-container">
+                            <div class="field-label">Bid/Offer Type</div>
+                            <select>
+                                <option value="bid">Bid</option>
+                                <option value="offer">Offer</option>
+                            </select>
+                        </div>
+                        <div class="field-container">
+                            <div class="field-label">Security Name</div>
+                            <input type="text" id="securityNameInput" class="security-name-input"
+                                placeholder="Security Name">
+                        </div>
+                        <div class="field-container">
+                            <div class="field-label">Quantity</div>
+                            <input type="number" placeholder="Quantity" min="1" step="1">
+                        </div>
+                        <div class="field-container">
+                            <div class="field-label">Price</div>
+                            <input type="number" id="priceInput" placeholder="Price" step="0.01">
+                        </div>
+                        <div class="field-container">
+                            <div class="field-label">Order Type</div>
+                            <select>
+                                <option value="lmt">Limit</option>
+                                <option value="mkt">Market</option>
+                            </select>
+                        </div>
+                        <button class="place-order-btn">Place Order</button>
+                    </div>
+                </div>
+
+                <div class="left-row">
+                    <div class="bottom-row-container news-container">
+                        <p id="news-content">Loading news...</p> <!-- Placeholder for news content -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="right-box-row">
+                    <h3>Profit and Loss</h3>
+                    <p>Summary of financial performance.</p>
+                </div>
+                <div class="right-box-row">
+                    <h3>Order Book</h3>
+                    <div class="table-container">
+                        <table class="order-book-table">
+                            <thead>
+                                <tr id="order-book-headers">
+                                    <!-- Dynamic headers will be inserted here -->
+                                </tr>
+                            </thead>
+                            <tbody id="order-book-data">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="right-box-row">
+                    <h3>Chart</h3>
+                    <p>Chart data and visualizations will be displayed here.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="left-column">
-            <div class="left-row">
-                <div class="table-container">
-                    <table>
-                        <thead>
-                        <tr id="table-headers">
-                            <!-- Dynamic headers will be inserted here -->
-                        </tr>
-                        </thead>
-                        <tbody id="bond-data">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="left-row">
-                <div class="bottom-row-container form-horizontal">
-                    <div class="field-container">
-                        <div class="field-label">Bid/Offer Type</div>
-                        <select>
-                            <option value="bid">Bid</option>
-                            <option value="offer">Offer</option>
-                        </select>
-                    </div>
-                    <div class="field-container">
-                        <div class="field-label">Security Name</div>
-                        <input type="text" id="securityNameInput" class="security-name-input" placeholder="Security Name">
-                    </div>
-                    <div class="field-container">
-                        <div class="field-label">Quantity</div>
-                        <input type="number" placeholder="Quantity" min="1" step="1">
-                    </div>
-                    <div class="field-container">
-                        <div class="field-label">Price</div>
-                        <input type="number" id="priceInput" placeholder="Price" step="0.01">
-                    </div>
-                    <div class="field-container">
-                        <div class="field-label">Order Type</div>
-                        <select>
-                            <option value="lmt">Limit</option>
-                            <option value="mkt">Market</option>
-                        </select>
-                    </div>
-                    <button class="place-order-btn">Place Order</button>
-                </div>
-            </div>
-
-            <div class="left-row">
-                <div class="bottom-row-container news-container">
-                    <p id="news-content">Loading news...</p> <!-- Placeholder for news content -->
-                </div>
-            </div>
-        </div>
-
-        <div class="right-column">
-            <div class="right-box-row">
-                <h3>Profit and Loss</h3>
-                <p>Summary of financial performance.</p>
-            </div>
-            <div class="right-box-row">
-                <h3>Order Book</h3>
-                <div class="table-container">
-                    <table class="order-book-table">
-                        <thead>
-                        <tr id="order-book-headers">
-                            <!-- Dynamic headers will be inserted here -->
-                        </tr>
-                        </thead>
-                        <tbody id="order-book-data">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="right-box-row">
-                <h3>Chart</h3>
-                <p>Chart data and visualizations will be displayed here.</p>
-            </div>
-        </div>
+    <!-- Popup and Overlay HTML -->
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <h2>Bond Calculator</h2>
+        <label for="bond">Select Bond:</label>
+        <select id="bond"></select>
+        <br><br>
+        <label for="type">Select Type:</label>
+        <select id="type">
+            <option value="price">Price</option>
+            <option value="yield">Yield</option>
+        </select>
+        <br><br>
+        <label for="inputValue">Enter Value:</label>
+        <input type="text" id="inputValue">
+        <br><br>
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="closePopup()">Close</button>
     </div>
-</div>
 
-<!-- Popup and Overlay HTML -->
-<div class="overlay" id="overlay" onclick="closePopup()"></div>
-<div class="popup" id="popup">
-    <h2>Bond Calculator</h2>
-    <label for="bond">Select Bond:</label>
-    <select id="bond"></select>
-    <br><br>
-    <label for="type">Select Type:</label>
-    <select id="type">
-        <option value="price">Price</option>
-        <option value="yield">Yield</option>
-    </select>
-    <br><br>
-    <label for="inputValue">Enter Value:</label>
-    <input type="text" id="inputValue">
-    <br><br>
-    <button onclick="calculate()">Calculate</button>
-    <button onclick="closePopup()">Close</button>
-</div>
+    <script>
+        const BASE_URL = 'https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io'; // Base URL constant
+        let bondDataCache = []; // Variable to store bond data
 
-<script>
-    const BASE_URL = 'https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io'; // Base URL constant
-
-    // Function to fetch bond data from the API
-    async function fetchBondData() {
-        try {
-            const response = await fetch(`${BASE_URL}/getbonds`); // Updated endpoint
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        // Function to fetch bond data from the API
+        async function fetchBondData() {
+            try {
+                const response = await fetch(`${BASE_URL}/getbonds`); // Updated endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                bondDataCache = data.bonds; // Store the bonds array in the cache
+                return bondDataCache; // Return the bonds array
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                return []; // Return an empty array on error
             }
-            const data = await response.json();
-            return data.bonds; // Return the bonds array
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-            return []; // Return an empty array on error
         }
-    }
 
-    // Function to fetch order book data from the API
-    async function fetchOrderBookData() {
-        try {
-            const response = await fetch(`${BASE_URL}/getorderbook`); // Updated endpoint
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        // Function to fetch order book data from the API
+        async function fetchOrderBookData() {
+            try {
+                const response = await fetch(`${BASE_URL}/getorderbook`); // Updated endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                return data.orderbook; // Return the orderbook array
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                return []; // Return an empty array on error
             }
-            const data = await response.json();
-            return data.orderbook; // Return the orderbook array
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-            return []; // Return an empty array on error
         }
-    }
 
-    // Function to fetch news data from the API
-    async function fetchNews() {
-        try {
-            const response = await fetch(`${BASE_URL}/getnews`); // Updated endpoint
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        // Function to fetch news data from the API
+        async function fetchNews() {
+            try {
+                const response = await fetch(`${BASE_URL}/getnews`); // Updated endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                return data.news; // Return the news string
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                return 'Failed to load news.'; // Return a fallback message on error
             }
-            const data = await response.json();
-            return data.news; // Return the news string
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-            return 'Failed to load news.'; // Return a fallback message on error
         }
-    }
 
-    async function fillTable() {
-        const bondDataElement = document.getElementById('bond-data');
-        const tableHeadersElement = document.getElementById('table-headers');
-        const bonds = await fetchBondData(); // Fetch bond data
+        async function fillTable() {
+            const bondDataElement = document.getElementById('bond-data');
+            const tableHeadersElement = document.getElementById('table-headers');
+            const bonds = await fetchBondData(); // Fetch bond data
 
-        // Set table headers dynamically based on the first bond object
-        if (bonds.length > 0) {
-            Object.keys(bonds[0]).forEach(key => {
-                const th = document.createElement('th');
-                th.textContent = key; // Set header text
-                tableHeadersElement.appendChild(th); // Append to the header row
+            // Set table headers dynamically based on the first bond object
+            if (bonds.length > 0) {
+                Object.keys(bonds[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key; // Set header text
+                    tableHeadersElement.appendChild(th); // Append to the header row
+                });
+            }
+
+            // Populate the table body with bond data
+            bonds.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = "clickable-row";
+                row.onclick = () => fillForm(item['Security Name'], item['LTP']);
+                Object.values(item).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value; // Set cell text
+                    row.appendChild(td); // Append to the row
+                });
+                bondDataElement.appendChild(row); // Append the row to the table body
             });
         }
 
-        // Populate the table body with bond data
-        bonds.forEach(item => {
-            const row = document.createElement('tr');
-            row.className = "clickable-row";
-            row.onclick = () => fillForm(item['Security Name'], item['LTP']);
-            Object.values(item).forEach(value => {
-                const td = document.createElement('td');
-                td.textContent = value; // Set cell text
-                row.appendChild(td); // Append to the row
-            });
-            bondDataElement.appendChild(row); // Append the row to the table body
-        });
-    }
+        async function fillOrderBook() {
+            const orderBookDataElement = document.getElementById('order-book-data');
+            const orderBookHeadersElement = document.getElementById('order-book-headers');
+            const orderbook = await fetchOrderBookData(); // Fetch order book data
 
-    async function fillOrderBook() {
-        const orderBookDataElement = document.getElementById('order-book-data');
-        const orderBookHeadersElement = document.getElementById('order-book-headers');
-        const orderbook = await fetchOrderBookData(); // Fetch order book data
+            // Set table headers dynamically based on the first order book object
+            if (orderbook.length > 0) {
+                Object.keys(orderbook[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key; // Set header text
+                    orderBookHeadersElement.appendChild(th); // Append to the header row
+                });
+            }
 
-        // Set table headers dynamically based on the first order book object
-        if (orderbook.length > 0) {
-            Object.keys(orderbook[0]).forEach(key => {
-                const th = document.createElement('th');
-                th.textContent = key; // Set header text
-                orderBookHeadersElement.appendChild(th); // Append to the header row
+            // Populate the table body with order book data
+            orderbook.forEach(item => {
+                const row = document.createElement('tr');
+                Object.values(item).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value; // Set cell text
+                    row.appendChild(td); // Append to the row
+                });
+                orderBookDataElement.appendChild(row); // Append the row to the table body
             });
         }
 
-        // Populate the table body with order book data
-        orderbook.forEach(item => {
-            const row = document.createElement('tr');
-            Object.values(item).forEach(value => {
-                const td = document.createElement('td');
-                td.textContent = value; // Set cell text
-                row.appendChild(td); // Append to the row
-            });
-            orderBookDataElement.appendChild(row); // Append the row to the table body
-        });
-    }
-
-    async function fillNews() {
-        const newsContentElement = document.getElementById('news-content');
-        const news = await fetchNews(); // Fetch news data
-        newsContentElement.textContent = news; // Set the news content
-    }
-
-    function fillForm(securityName, ltp) {
-        document.getElementById("securityNameInput").value = securityName;
-        document.getElementById("priceInput").value = ltp;
-    }
-
-    // Popup and Overlay Functions
-    async function fetchBonds() {
-        try {
-            let response = await fetch('https://api.example.com/bonds'); // Replace with actual API
-            let data = await response.json();
-            let bondSelect = document.getElementById('bond');
-            bondSelect.innerHTML = data.map(bond => `<option value="${bond.id}">${bond.name}</option>`).join('');
-        } catch (error) {
-            console.error('Error fetching bonds:', error);
+        async function fillNews() {
+            const newsContentElement = document.getElementById('news-content');
+            const news = await fetchNews(); // Fetch news data
+            newsContentElement.textContent = news; // Set the news content
         }
-    }
 
-    function openPopup() {
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
-        fetchBonds();
-    }
+        function fillForm(securityName, ltp) {
+            document.getElementById("securityNameInput").value = securityName;
+            document.getElementById("priceInput").value = ltp;
+        }
 
-    function closePopup() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    }
+        // Popup and Overlay Functions
+        async function fetchBonds() {
+            try {
+                const bonds = bondDataCache; // Use cached bond data
+                const bondSelect = document.getElementById('bond');
+                bondSelect.innerHTML = bonds.map(bond => `<option value="${bond['Security Name']}">${bond['Security Name']}</option>`).join('');
+            } catch (error) {
+                console.error('Error fetching bonds:', error);
+            }
+        }
 
-    function calculate() {
-        let bond = document.getElementById('bond').value;
-        let type = document.getElementById('type').value;
-        let value = document.getElementById('inputValue').value;
-        alert(`Calculating ${type} for bond ${bond} with value ${value}`);
-    }
+        function openPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+            fetchBonds();
+        }
 
-    // Call fillTable, fillOrderBook, and fillNews on page load
-    window.onload = async () => {
-        await fillTable();
-        await fillOrderBook();
-        await fillNews(); // Fetch and display news
-    };
-</script>
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function calculate() {
+            let bond = document.getElementById('bond').value;
+            let type = document.getElementById('type').value;
+            let value = document.getElementById('inputValue').value;
+            alert(`Calculating ${type} for bond ${bond} with value ${value}`);
+        }
+
+        // Call fillTable, fillOrderBook, and fillNews on page load
+        window.onload = async () => {
+            await fillTable();
+            await fillOrderBook();
+            await fillNews(); // Fetch and display news
+        };
+    </script>
 
 </body>
+
 </html>
+</create_file>
