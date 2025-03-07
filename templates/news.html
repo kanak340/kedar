@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bond Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <button onclick="openPopup()">Open Form</button>
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <h2>Bond Calculator</h2>
+        <label for="bond">Select Bond:</label>
+        <select id="bond"></select>
+        <br><br>
+        <label for="type">Select Type:</label>
+        <select id="type">
+            <option value="price">Price</option>
+            <option value="yield">Yield</option>
+        </select>
+        <br><br>
+        <label for="inputValue">Enter Value:</label>
+        <input type="text" id="inputValue">
+        <br><br>
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="closePopup()">Close</button>
+    </div>
+    
+    <script>
+        async function fetchBonds() {
+            try {
+                let response = await fetch('https://api.example.com/bonds'); // Replace with actual API
+                let data = await response.json();
+                let bondSelect = document.getElementById('bond');
+                bondSelect.innerHTML = data.map(bond => `<option value="${bond.id}">${bond.name}</option>`).join('');
+            } catch (error) {
+                console.error('Error fetching bonds:', error);
+            }
+        }
+
+        function openPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+            fetchBonds();
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function calculate() {
+            let bond = document.getElementById('bond').value;
+            let type = document.getElementById('type').value;
+            let value = document.getElementById('inputValue').value;
+            alert(`Calculating ${type} for bond ${bond} with value ${value}`);
+        }
+    </script>
+</body>
+</html>

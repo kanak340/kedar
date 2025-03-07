@@ -213,6 +213,31 @@
             background-color: #f9f9f9; /* Optional: background color */
             margin-top: 0.5em; /* Reduced margin above the news box */
         }
+
+        /* Popup and Overlay Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            z-index: 1000; /* Ensure it is above other content */
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1001; /* Ensure it is above the overlay */
+            display: none; /* Hidden by default */
+        }
     </style>
 </head>
 <body>
@@ -223,9 +248,9 @@
             <a href="#"><button>Mr. Kedar</button></a>
             <a href="#"><button>Home</button></a>
             <a href="#"><button>Charts</button></a>
-            <a href="#"><button>Get Orders</button></a> <!-- Updated button text -->
+            <a href="#"><button>Get Orders</button></a>
             <a href="#"><button>Portfolio</button></a>
-            <a href="#"><button>News</button></a>
+            <a href="#"><button onclick="openPopup()">News</button></a> <!-- Updated button to open popup -->
         </div>
 
         <div class="nav-right">
@@ -250,7 +275,6 @@
             </div>
 
             <div class="left-row">
-                <div class="order-details-header">Enter Order Details</div>
                 <div class="bottom-row-container form-horizontal">
                     <div class="field-container">
                         <div class="field-label">Bid/Offer Type</div>
@@ -283,7 +307,6 @@
             </div>
 
             <div class="left-row">
-                <div class="order-details-header">News</div>
                 <div class="bottom-row-container news-container">
                     <p id="news-content">Loading news...</p> <!-- Placeholder for news content -->
                 </div>
@@ -316,6 +339,26 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Popup and Overlay HTML -->
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+    <h2>Bond Calculator</h2>
+    <label for="bond">Select Bond:</label>
+    <select id="bond"></select>
+    <br><br>
+    <label for="type">Select Type:</label>
+    <select id="type">
+        <option value="price">Price</option>
+        <option value="yield">Yield</option>
+    </select>
+    <br><br>
+    <label for="inputValue">Enter Value:</label>
+    <input type="text" id="inputValue">
+    <br><br>
+    <button onclick="calculate()">Calculate</button>
+    <button onclick="closePopup()">Close</button>
 </div>
 
 <script>
@@ -429,6 +472,36 @@
     function fillForm(securityName, ltp) {
         document.getElementById("securityNameInput").value = securityName;
         document.getElementById("priceInput").value = ltp;
+    }
+
+    // Popup and Overlay Functions
+    async function fetchBonds() {
+        try {
+            let response = await fetch('https://api.example.com/bonds'); // Replace with actual API
+            let data = await response.json();
+            let bondSelect = document.getElementById('bond');
+            bondSelect.innerHTML = data.map(bond => `<option value="${bond.id}">${bond.name}</option>`).join('');
+        } catch (error) {
+            console.error('Error fetching bonds:', error);
+        }
+    }
+
+    function openPopup() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
+        fetchBonds();
+    }
+
+    function closePopup() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    function calculate() {
+        let bond = document.getElementById('bond').value;
+        let type = document.getElementById('type').value;
+        let value = document.getElementById('inputValue').value;
+        alert(`Calculating ${type} for bond ${bond} with value ${value}`);
     }
 
     // Call fillTable, fillOrderBook, and fillNews on page load
