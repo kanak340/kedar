@@ -407,18 +407,20 @@
     <!-- Popup and Overlay HTML -->
     <div class="overlay" id="overlay" onclick="closePopup()"></div>
     <div class="popup" id="popup">
-        <h2>Bond Calculator</h2>
+        <h2>Price/Yield Calculator</h2>
         <label for="bond">Select Bond:</label>
         <select id="bond"></select>
         <br><br>
-        <label for="type">Select Type:</label>
+        <label for="type">To Calculate:</label>
         <select id="type">
             <option value="price">Price</option>
             <option value="yield">Yield</option>
         </select>
         <br><br>
-        <label for="inputValue">Enter Value:</label>
-        <input type="text" id="inputValue">
+        <label for="inputValue">Enter Price/Yield:</label>
+        <input type="text" id="inputValue" placeholder="Price/Yield">
+      
+       
         <br><br>
         <button onclick="calculate()">Calculate</button>
         <button onclick="closePopup()">Close</button>
