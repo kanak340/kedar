@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table with Loop</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Ensure the body takes full screen size */
         html,
@@ -132,7 +133,7 @@
 
         .left-row:nth-child(3) {
             overflow-y: scroll;
-            flex: 0 0 10%;
+            flex: 0 0 13%;
             /* 10% of the height */
         }
 
@@ -256,18 +257,16 @@
 
         /* News container styling */
         .news-container {
-            height: 150px;
             /* Set a fixed height */
             overflow-y: auto;
             /* Enable vertical scrolling */
             padding: 0.5em;
+            padding-top: 0px;
             /* Padding for aesthetics */
             border: 1px solid #ddd;
             /* Optional: border for better visibility */
             background-color: #f9f9f9;
             /* Optional: background color */
-            margin-top: 0.5em;
-            /* Reduced margin above the news box */
         }
 
         /* Popup and Overlay Styles */
@@ -398,7 +397,7 @@
 
                 <div class="right-box-row">
                     <h3>Chart</h3>
-                    <p>Chart data and visualizations will be displayed here.</p>
+                    <canvas id="yieldChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -571,9 +570,65 @@
             alert(`Calculating ${type} for bond ${bond} with value ${value}`);
         }
 
-        // Call fillTable, fillOrderBook, and fillNews on page load
+        // Function to fetch PnL data from the API
+
+        async function fetchChartData() {
+            try {
+                const response = await fetch(`${BASE_URL}/getchart`); // Updated endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                return data.chart; // Return the chart data
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+                console.error('Error fetching chart data:', error);
+                return { title: 'Error', xAxis: '', yAxis: '', data: [] }; // Return error structure on error
+            }
+        }
+
+        // Function to render the chart
+        async function renderChart() {
+            const chartData = await fetchChartData();
+            const ctx = document.getElementById('yieldChart')?.getContext('2d');
+            const labels = chartData.data.map(point => point.date);
+            const yields = chartData.data.map(point => point.yield);
+
+            const yieldChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartData.title,
+                        data: yields,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: chartData.xAxis
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: chartData.yAxis
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call fillTable, fillOrderBook, fillNews, renderChart, and displayPnL on page load
         window.onload = async () => {
             await fillTable();
+            await renderChart()
             await fillOrderBook();
             await fillNews(); // Fetch and display news
         };
@@ -582,4 +637,3 @@
 </body>
 
 </html>
-</create_file>
