@@ -1,14 +1,18 @@
 from flask import Flask, render_template, jsonify, request
 import requests
+import logging
 
 app = Flask(__name__)
 
-# Dummy API base URL
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+
+# API base URL
 API_BASE_URL = "https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io"
 
 @app.route('/')
 def index():
-    return render_template('/adminDashboard.html')
+    return render_template('login.html')
 
 @app.route('/adminDashboard')
 def adminDashboard():
@@ -24,7 +28,9 @@ def orders():
 
 @app.route('/api/updateuser', methods=['POST'])
 def update_user():
+    logging.debug(f"User login request data: {data}")
     data = request.get_json()
+    
     uid = data.get('uid')
     username = data.get('username')
     password = data.get('password')
@@ -36,12 +42,15 @@ def update_user():
             "password": password
         })
         response.raise_for_status()  # Raise an error for bad responses
+        logging.debug(f"User login response: {response.json()}")
         return jsonify({'message': 'User updated successfully'}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': str(e)}), 500
+        logging.error(f"User login error: {str(e)}")
+        return jsonify({'error': 'Internal server error during user login'}), 500
 
 @app.route('/api/adduser', methods=['POST'])
 def add_user():
+    logging.debug(f"Admin login request data: {data}")
     data = request.get_json()
     uid = data.get('uid')
     username = data.get('username')
@@ -54,9 +63,11 @@ def add_user():
             "password": password
         })
         response.raise_for_status()  # Raise an error for bad responses
+        logging.debug(f"Admin login response: {response.json()}")
         return jsonify({'message': 'User added successfully'}), 201
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': str(e)}), 500
+        logging.error(f"Admin login error: {str(e)}")
+        return jsonify({'error': 'Internal server error during admin login'}), 500
 
 @app.route('/api/deleteuser/<uid>', methods=['DELETE'])
 def delete_user(uid):
@@ -71,9 +82,6 @@ def delete_user(uid):
 def users():
     return render_template('users.html')
 
-@app.route('/user_reports')
-def user_reports():
-    return render_template('user_reports.html')
 
 @app.route('/settings')
 def settings():
@@ -91,11 +99,57 @@ def news():
 def portfolio():
     return render_template('portfolio.html')
 
+@app.route('/api/getreports', methods=['PUT'])
+def get_reports():
+    data = request.get_json()
+    uid = data.get('uid')
+    
+    try:
+        response = requests.get(f"{API_BASE_URL}/getreports/{uid}")
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify(response.json()), 200
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/users')
 def get_users():
     response = requests.get(f"{API_BASE_URL}/getusers")
     return jsonify(response.json())
 
+# New login endpoints
+@app.route('/api/userlogin', methods=['POST'])
+def user_login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+  
+    try:
+        response = requests.post("https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/userlogin", json={
+            "username": username,
+            "password": password
+        })
+        response.raise_for_status()  # Raise an error for bad responses\
+       
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/loginadmin', methods=['POST'])
+def admin_login():
+    data = request.get_json()
+    adminId = data.get('adminId')
+    password = data.get('password')
+    
+    try:
+        response = requests.post("https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/adminlogin", json={
+            "adminId": adminId,
+            "password": password
+        })
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify(response.json()), response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

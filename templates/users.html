@@ -12,6 +12,7 @@
 
     {% block content %}
     <h1>Users Page</h1>
+ 
     <form id="addUserForm" onsubmit="addUser(event)">
 
         <input type="text" id="uid" placeholder="UID" required>
@@ -19,8 +20,10 @@
         <input type="password" id="password" placeholder="Password" required>
         <button type="submit">Add User</button>
     </form>
+    <br>
 
-    <p>This is the users management page.</p>
+    <div id="loading" style="display: block;">Loading...</div>
+
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr>
@@ -30,7 +33,6 @@
                 <th style="border: 1px solid #dddddd; padding: 8px;">Password</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">Edit</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">Delete</th>
-                <th style="border: 1px solid #dddddd; padding: 8px;">View Report</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">View Report</th>
 
 
@@ -176,10 +178,19 @@
         }
 
 
+        const loadingIndicator = document.getElementById('loading');
+        loadingIndicator.style.display = 'block'; // Show loading indicator
         fetch('/api/users')
+
+
+
             .then(response => response.json())
             .then(data => {
+                loadingIndicator.style.display = 'none'; // Hide loading indicator
                 const tableBody = document.querySelector('tbody');
+
+
+
                 data.users.forEach(user => {
                     const row = document.createElement('tr');
                     const password = user.password; // Assuming the API provides the password
