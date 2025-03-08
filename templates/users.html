@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+
+<body>
+    {% extends 'layoutsAdmin.html' %}
+
+    {% block content %}
+    <h1>Users Page</h1>
+    <form id="addUserForm" onsubmit="addUser(event)">
+
+        <input type="text" id="uid" placeholder="UID" required>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <p>This is the users management page.</p>
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>S.NO</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">UID</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">Username</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">Password</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">Edit</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">Delete</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">View Report</th>
+                <th style="border: 1px solid #dddddd; padding: 8px;">View Report</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <!-- User data rows will be inserted here -->
+        </tbody>
+    </table>
+    <style>
+        table {
+            border: 1px solid #dddddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const uid = document.getElementById('uid').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Here you would typically send a request to your API to add the user
+            fetch('/api/adduser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uid: uid,
+                    username: username,
+                    password: password
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('User added successfully:', data);
+                    location.reload();
+                    // Optionally, refresh the user list or clear the form
+                })
+                .catch(error => console.error('Error adding user:', error));
+
+        });
+
+        function openEditDialog(uid, username, password) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.left = '50%';
+            modal.style.top = '50%';
+            modal.style.transform = 'translate(-50%, -50%)';
+            modal.style.backgroundColor = 'white';
+            modal.style.padding = '20px';
+            modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+            modal.innerHTML = `
+                <h2>Edit User</h2>
+                <form id="editUserForm">
+                    <input type="hidden" id="editUid" value="${uid}">
+                    <input type="text" id="editUsername" value="${username}" required>
+                    <input type="password" id="editPassword" value="${password}" required>
+                    <button type="submit">Save Changes</button>
+                    <button type="button" onclick="closeModal()">Cancel</button>
+                </form>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('editUserForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const newUsername = document.getElementById('editUsername').value;
+                const newPassword = document.getElementById('editPassword').value;
+                fetch('/api/updateuser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        uid: uid,
+                        username: newUsername,
+                        password: newPassword
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('User updated successfully:', data);
+                        closeModal();
+                        location.reload(); // Refresh the page after editing the user
+
+                    })
+                    .catch(error => console.error('Error updating user:', error));
+
+                //closeModal();
+            });
+        }
+
+        function deleteUser(uid) {
+            fetch(`/api/deleteuser/${uid}`, {
+                method: 'DELETE',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('User deleted successfully:', data);
+                    location.reload(); // Refresh the page after deleting the user
+                })
+                .catch(error => console.error('Error deleting user:', error));
+        }
+
+
+
+
+        function viewReport(uid) {
+            fetch(`/api/getreports`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uid: uid })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Report fetched successfully:', data);
+                window.open(data.document, '_blank'); // Open the document link in a new tab
+            })
+            .catch(error => console.error('Error fetching report:', error));
+        }
+
+
+        function closeModal() {
+
+
+
+
+            const modal = document.querySelector('div[style*="fixed"]');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+
+        fetch('/api/users')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('tbody');
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    const password = user.password; // Assuming the API provides the password
+                    const serialNumber = tableBody.children.length + 1; // Calculate serial number based on current row count
+                    row.innerHTML = `<td style="border: 1px solid #dddddd; padding: 8px;">${serialNumber}</td><td style="border: 1px solid #dddddd; padding: 8px;">${user.uid}</td><td style="border: 1px solid #dddddd; padding: 8px;">${user.username}</td><td style="border: 1px solid #dddddd; padding: 8px;">${password}</td><td><button onclick="openEditDialog(${user.uid}, '${user.username}', '${password}')">Edit</button></td><td><button onclick="deleteUser('${user.uid}')">Delete</button></td><td><button onclick="viewReport('${user.uid}')">View Report</button></td>`;
+
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching user data:', error));
+    </script>
+    {% endblock %}
+</body>
+
+</html>

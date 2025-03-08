@@ -1,5 +1,8 @@
+{% extends 'layout.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
+    
 
 <head>
     <meta charset="UTF-8">
@@ -11,22 +14,7 @@
 
 <body>
 
-    <div class="container">
-        <div class="nav-bar">
-            <div class="nav-left">
-                <a href="/secondary-market"><button>Mr. Kedar</button></a>
-                <a href="/secondary-market"><button>Home</button></a>
-                <a href="/charts"><button>Charts</button></a>
-                <a href="/orders"><button>Orders</button></a>
-                <a href="/news"><button>News</button></a>
-                <a href="/portfolio"><button>Portfolio</button></a>
-                <a href="#"><button onclick="openPopup()">Calculate</button></a> <!-- Updated button to open popup -->
-            </div>
-
-            <div class="nav-right">
-                <a href="#"><button class="logout-btn">Logout</button></a>
-            </div>
-        </div>
+    <div class="container">    
 
         <div class="main-content">
             <div class="left-column">
@@ -42,6 +30,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
                 <div class="left-row">
@@ -139,7 +128,7 @@
 
     <script src="/static/js/secondaryMarket.js"></script>
 
-
+    {% endblock %}
 </body>
 
 </html>

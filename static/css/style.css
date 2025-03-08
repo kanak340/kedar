@@ -1,26 +1,53 @@
+/* Navigation bar styling */
+html,
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    font-size: 16px;
+    /* Consistent base font size */
 }
-
-nav ul {
-    background: #333;
-    padding: 10px;
-    list-style: none;
+.container {
     display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
-
-nav ul li {
-    margin: 0 10px;
-}
-
-nav ul li a {
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
     color: white;
-    text-decoration: none;
+    padding: 0.5em 1em;
+    /* Adjusted padding */
+    height: 50px;
+    /* Fixed height for the navbar */
 }
 
-.content {
-    padding: 20px;
+.nav-left {
+    display: flex;
+    gap: 0.5em;
+    /* Reduced gap */
 }
+
+.nav-left button,
+.logout-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.3em 0.5em;
+    /* Adjusted padding */
+    transition: background-color 0.3s ease;
+    font-size: inherit;
+    /* Inherit font size */
+}
+
+.nav-left button:hover,
+.logout-btn:hover {
+    background-color: #444;
+}
+

@@ -1,59 +1,4 @@
-/* Ensure the body takes full screen size */
-html,
-body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    font-size: 16px;
-    /* Consistent base font size */
-}
 
-/* Responsive container */
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-/* Navigation bar styling */
-.nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 0.5em 1em;
-    /* Adjusted padding */
-    height: 50px;
-    /* Fixed height for the navbar */
-}
-
-.nav-left {
-    display: flex;
-    gap: 0.5em;
-    /* Reduced gap */
-}
-
-.nav-left button,
-.logout-btn {
-    background-color: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 0.3em 0.5em;
-    /* Adjusted padding */
-    transition: background-color 0.3s ease;
-    font-size: inherit;
-    /* Inherit font size */
-}
-
-.nav-left button:hover,
-.logout-btn:hover {
-    background-color: #444;
-}
 
 /* Main content layout */
 .main-content {
@@ -118,13 +63,13 @@ body {
 
 .left-row:nth-child(2) {
     overflow-y: scroll;
-    flex: 0 0 10%;
+    flex: 0 0 8%;
     /* 10% of the height */
 }
 
 .left-row:nth-child(3) {
     overflow-y: scroll;
-    flex: 0 0 13%;
+    flex: 0 0 10%;
     /* 10% of the height */
 }
 

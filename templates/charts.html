@@ -1,145 +1,116 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bond Yield Over Time</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+{% extends "layout.html" %}
 
-        .topnav {
-            background-color: #333;
-            color: white;
-            padding: 0;
-            text-align: center;
-            height: 50px;
-            line-height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+    }
 
-        .topnav a {
-            color: white;
-            text-decoration: none;
-            padding: 0 20px;
-        }
+    .charts-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        padding: 20px;
+        height: calc(100vh - 50px) !important;
+    }
 
-        .charts-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 20px;
-            padding: 20px;
-            height: calc(100vh - 50px) !important;
-        }
+    .chart-container {
+        width: 100% !important;
+        height: 300px !important;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
 
-        .chart-container {
-            width: 100% !important;
-            height: 300px !important;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
+    .chart-heading {
+        margin-top: 0;
+        margin-bottom: 10px;
+        text-align: center;
+        color: #555;
+    }
 
-        .chart-heading {
-            margin-top: 0;
-            margin-bottom: 10px;
-            text-align: center;
-            color: #555;
-        }
-
-        canvas {
-            width: 100% !important;
-            height: calc(100% - 40px) !important;
-        }
-    </style>
-</head>
-<body>
-    <nav class="topnav">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </nav>
-    <div class="charts-container">
-        <div class="chart-container">
-            <h4 class="chart-heading">Bond Yield Over Time 1</h4>
-            <canvas id="chart1"></canvas>
-        </div>
-        <div class="chart-container">
-            <h4 class="chart-heading">Bond Yield Over Time 2</h4>
-            <canvas id="chart2"></canvas>
-        </div>
-        <div class="chart-container">
-            <h4 class="chart-heading">Bond Yield Over Time 3</h4>
-            <canvas id="chart3"></canvas>
-        </div>
-        <div class="chart-container">
-            <h4 class="chart-heading">Bond Yield Over Time 4</h4>
-            <canvas id="chart4"></canvas>
-        </div>
+    canvas {
+        width: 100% !important;
+        height: calc(100% - 40px) !important;
+    }
+</style>
+<div class="charts-container">
+    <div class="chart-container">
+        <h4 class="chart-heading">Bond Yield Over Time 1</h4>
+        <canvas id="chart1"></canvas>
     </div>
+    <div class="chart-container">
+        <h4 class="chart-heading">Bond Yield Over Time 2</h4>
+        <canvas id="chart2"></canvas>
+    </div>
+    <div class="chart-container">
+        <h4 class="chart-heading">Bond Yield Over Time 3</h4>
+        <canvas id="chart3"></canvas>
+    </div>
+    <div class="chart-container">
+        <h4 class="chart-heading">Bond Yield Over Time 4</h4>
+        <canvas id="chart4"></canvas>
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        async function fetchData() {
-            const response = await fetch('https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/getcharts');
-            const data = await response.json();
-            return data.chart;
-        }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    async function fetchData() {
+        const response = await fetch('https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/getcharts');
+        const data = await response.json();
+        return data.chart;
+    }
 
-        async function createCharts() {
-            const chartData = await fetchData();
+    async function createCharts() {
+        const chartData = await fetchData();
 
-            chartData.forEach((chartInfo, index) => {
-                const ctx = document.getElementById(`chart${index + 1}`).getContext('2d');
-                const dates = chartInfo.data.map(item => item.date);
-                const yields = chartInfo.data.map(item => item.yield);
+        chartData.forEach((chartInfo, index) => {
+            const ctx = document.getElementById(`chart${index + 1}`).getContext('2d');
+            const dates = chartInfo.data.map(item => item.date);
+            const yields = chartInfo.data.map(item => item.yield);
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: dates,
-                        datasets: [{
-                            label: chartInfo.title,
-                            data: yields,
-                            borderColor: 'blue',
-                            fill: false
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: chartInfo.title,
+                        data: yields,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
                                 display: true,
-                                title: {
-                                    display: true,
-                                    text: chartInfo.xAxis
-                                }
-                            },
-                            y: {
+                                text: chartInfo.xAxis
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
                                 display: true,
-                                title: {
-                                    display: true,
-                                    text: chartInfo.yAxis
-                                }
+                                text: chartInfo.yAxis
                             }
                         }
                     }
-                });
+                }
             });
-        }
+        });
+    }
 
-        createCharts();
-    </script>
-</body>
-</html>
+    createCharts();
+</script>
+{% endblock %}

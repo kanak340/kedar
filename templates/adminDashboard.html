@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* The sidebar menu */
+        .sidenav {
+            height: 100%;
+            width: 160px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            overflow-x: hidden;
+            padding-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* The navigation menu links */
+        .sidenav a {
+            padding: 8px 8px 8px 16px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+            background-color: #444;
+        }
+
+        /* Style page content */
+        .main {
+            margin-left: 160px;
+            padding: 20px;
+            background-color: #fff;
+            min-height: 100vh;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Content Styles */
+        .content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="main">
+    {% extends 'layoutsAdmin.html' %}
+    {% block content %}
+    <div class="header">
+        <h1>Dashboard</h1>
+    </div>
+
+        <div class="content">
+            <p>Welcome to the dashboard.</p>
+            <p>This is the main dashboard page.</p>
+        </div>
+    {% endblock %}
+    </div>
+
+</body>
+</html>
