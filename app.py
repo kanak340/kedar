@@ -18,18 +18,21 @@ def index():
 def adminDashboard():
     return render_template('adminDashboard.html')
 
-@app.route('/secondary-market')
+@app.route('/secondaryMarket')
 def home():
     return render_template('secondaryMarket.html')
 
 @app.route('/orders')
 def orders():
     return render_template('orders.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 @app.route('/api/updateuser', methods=['POST'])
 def update_user():
-    logging.debug(f"User login request data: {data}")
     data = request.get_json()
+    logging.debug(f"User login request data: {data}")
     
     uid = data.get('uid')
     username = data.get('username')
@@ -50,8 +53,9 @@ def update_user():
 
 @app.route('/api/adduser', methods=['POST'])
 def add_user():
-    logging.debug(f"Admin login request data: {data}")
     data = request.get_json()
+    logging.debug(f"Admin login request data: {data}")
+    
     uid = data.get('uid')
     username = data.get('username')
     password = data.get('password')
@@ -82,7 +86,6 @@ def delete_user(uid):
 def users():
     return render_template('users.html')
 
-
 @app.route('/settings')
 def settings():
     return render_template('settings.html')
@@ -111,46 +114,48 @@ def get_reports():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/users')
-def get_users():
-    response = requests.get(f"{API_BASE_URL}/getusers")
-    return jsonify(response.json())
 
-# New login endpoints
+
 @app.route('/api/userlogin', methods=['POST'])
 def user_login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-  
+    
+    # Validate the username and password using an API call
     try:
-        response = requests.post("https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/userlogin", json={
+        response = requests.post(f"{API_BASE_URL}/userlogin", json={
             "username": username,
             "password": password
         })
-        response.raise_for_status()  # Raise an error for bad responses\
-       
-        return jsonify(response.json()), response.status_code
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify({'message': 'Login successful'}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': str(e)}), 500
+        logging.error(f"Login error: {str(e)}")
+        return jsonify({'error': 'Invalid credentials'}), 401
+    
+@app.route('/api/users')
+def get_users():
+    response = requests.get(f"{API_BASE_URL}/getusers")
+    return jsonify(response.json())
 
-
-@app.route('/api/loginadmin', methods=['POST'])
+@app.route('/api/adminlogin', methods=['POST'])
 def admin_login():
     data = request.get_json()
-    adminId = data.get('adminId')
+    username = data.get('username')
     password = data.get('password')
     
+    # Validate the username and password using an API call
     try:
-        response = requests.post("https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io/adminlogin", json={
-            "adminId": adminId,
+        response = requests.post(f"{API_BASE_URL}/adminlogin", json={
+            "username": username,
             "password": password
         })
         response.raise_for_status()  # Raise an error for bad responses
-        return jsonify(response.json()), response.status_code
+        return jsonify({'message': 'Login successful'}), 200
     except requests.exceptions.RequestException as e:
-        return jsonify({'error': str(e)}), 500
-
+        logging.error(f"Login error: {str(e)}")
+        return jsonify({'error': 'Invalid credentials'}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)
