@@ -77,12 +77,19 @@
         <a href="/users">Users</a>
 
         <a href="/settings">Settings</a>
-        <a href="/login">Logout</a>
+        <a onclick="logout()">Logout</a>
+
     </div>
 
     <div class="content main"> 
         {% block content %}{% endblock %}
     </div>
 
-</body>
+    <script>
+        function logout() {
+            localStorage.removeItem('token'); // Remove the token from local storage
+            window.location.href = '/login'; // Redirect to login page
+        }
+    </script>
+
 </html>

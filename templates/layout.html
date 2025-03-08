@@ -20,8 +20,14 @@
             </div>
 
             <div class="nav-right">
-                <a href="/login"><button class="logout-btn">Logout</button></a>
+                <a  onclick="logout()"><button class="logout-btn">Logout</button></a>
             </div>
+    <script>
+        function logout() {
+            localStorage.removeItem('token'); // Remove the token from local storage
+            window.location.href = '/login'; // Redirect to login page
+        }
+    </script>
         </div>
     <div class="content">
         {% block content %}{% endblock %}

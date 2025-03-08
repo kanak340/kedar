@@ -129,7 +129,8 @@ def user_login():
             "password": password
         })
         response.raise_for_status()  # Raise an error for bad responses
-        return jsonify({'message': 'Login successful'}), 200
+        token = response.json().get('token')  # Extract the token from the response
+        return jsonify({'message': 'Login successful', 'token': token}), 200
     except requests.exceptions.RequestException as e:
         logging.error(f"Login error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
@@ -152,7 +153,8 @@ def admin_login():
             "password": password
         })
         response.raise_for_status()  # Raise an error for bad responses
-        return jsonify({'message': 'Login successful'}), 200
+        token = response.json().get('token')  # Extract the token from the response
+        return jsonify({'message': 'Login successful', 'token': token}), 200
     except requests.exceptions.RequestException as e:
         logging.error(f"Login error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
