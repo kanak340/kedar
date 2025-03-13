@@ -4,7 +4,13 @@ let bondDataCache = []; // Variable to store bond data
 // Function to fetch bond data from the API
 async function fetchBondData() {
     try {
-        const response = await fetch(`${BASE_URL}/getbonds`); // Updated endpoint
+        const response = await fetch(`${BASE_URL}/getbonds`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }); // Updated endpoint
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -20,7 +26,13 @@ async function fetchBondData() {
 // Function to fetch order book data from the API
 async function fetchOrderBookData() {
     try {
-        const response = await fetch(`${BASE_URL}/getorderbook`); // Updated endpoint
+        const response = await fetch(`${BASE_URL}/getorderbook`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }); // Updated endpoint
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -35,7 +47,13 @@ async function fetchOrderBookData() {
 // Function to fetch news data from the API
 async function fetchNews() {
     try {
-        const response = await fetch(`${BASE_URL}/getnews`); // Updated endpoint
+        const response = await fetch(`${BASE_URL}/getnews`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }); // Updated endpoint
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -144,7 +162,13 @@ function calculate() {
 // Function to fetch PnL data from the API
 async function fetchPnLData() {
     try {
-        const response = await fetch(`${BASE_URL}/getpnl`); // Updated endpoint
+        const response = await fetch(`${BASE_URL}/getpnl`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }); // Updated endpoint
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -173,7 +197,13 @@ async function displayPnL() {
 // Function to fetch chart data from the API
 async function fetchChartData() {
     try {
-        const response = await fetch(`${BASE_URL}/getchart`); // Updated endpoint
+        const response = await fetch(`${BASE_URL}/getchart`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }); // Updated endpoint
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

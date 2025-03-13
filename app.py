@@ -19,9 +19,14 @@ def adminDashboard():
     return render_template('adminDashboard.html')
 
 @app.route('/secondaryMarket')
-def home():
+def secondaryMarket():
     return render_template('secondaryMarket.html')
-
+@app.route('/marketSelection')
+def marketSelection():
+    return render_template('marketSelection.html')
+@app.route('/primaryMarket')
+def primaryMarket():
+    return render_template('primaryMarket.html')
 @app.route('/orders')
 def orders():
     return render_template('orders.html')
@@ -139,6 +144,17 @@ def user_login():
 def get_users():
     response = requests.get(f"{API_BASE_URL}/getusers")
     return jsonify(response.json())
+
+@app.route('/api/getIsPrimary', methods=['GET'])
+def get_is_primary():
+    # Logic to determine if primary market is enabled
+    try:
+        response = requests.get(f"{API_BASE_URL}/getIsPrimary")
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify(response.json()), 200
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error fetching primary market status: {str(e)}")
+        return jsonify({'error': 'Failed to fetch primary market status'}), 500
 
 @app.route('/api/adminlogin', methods=['POST'])
 def admin_login():

@@ -1,9 +1,105 @@
-{% extends "layout.html" %}
-{% block title %}Market Selection{% endblock %}
-{% block content %}
-    <h2>Select a Market</h2>
-    <ul>
-        <li><a href="{{ url_for('primary_market') }}">Primary Market</a></li>
-        <li><a href="{{ url_for('secondary_market') }}">Secondary Market</a></li>
-    </ul>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Buttons</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const primaryButton = document.getElementById("primaryButton");
+            const secondaryButton = document.getElementById("secondaryButton");
+            const loadingText = document.getElementById("loadingText");
+            const errorText = document.getElementById("errorText");
+            
+            // Show loading state
+            loadingText.style.display = "block";
+            errorText.style.display = "none";
+            primaryButton.style.display = "none";
+            secondaryButton.style.display = "none";
+
+            try {
+          
+               
+                
+                const response = await fetch('/api/getIsPrimary', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const apiResponse = await response.json();
+                if (!apiResponse) {
+                    throw new Error("Failed to fetch data from API");
+                }
+
+                if (!apiResponse) {
+                    throw new Error("Failed to fetch data from API");
+                }
+                
+                loadingText.style.display = "none";
+                primaryButton.style.display = "inline-block";
+                secondaryButton.style.display = "inline-block";
+
+                if (apiResponse.isPrimary) { 
+                    primaryButton.style.backgroundColor = "green";
+                    primaryButton.onclick = () => window.location.href = "primaryMarket";
+                    
+                    secondaryButton.style.backgroundColor = "#4b5563";
+                    secondaryButton.innerHTML = "&#x1F512; Secondary Market"; // Lock symbol
+                    secondaryButton.disabled = true;
+                } else {
+                    secondaryButton.style.backgroundColor = "green";
+                    secondaryButton.onclick = () => window.location.href = "secondaryMarket";
+                    
+                    primaryButton.style.backgroundColor = "#4b5563";
+                    primaryButton.innerHTML = "&#x1F512; Primary Market"; // Lock symbol
+                    primaryButton.disabled = true;
+                }
+            } catch (error) {
+                loadingText.style.display = "none";
+                errorText.style.display = "block";
+                errorText.innerText = "Error: Unable to load market status. Please try again later.";
+            }
+        });
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            margin: 0;
+            flex-direction: column;
+        }
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+        .button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .loading, .error {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingText" class="loading">Loading...</div>
+    <div id="errorText" class="error"></div>
+    <div class="button-container">
+        <button id="primaryButton" class="button primary">Primary Market</button>
+        <button id="secondaryButton" class="button secondary">Secondary Market</button>
+    </div>
+</body>
+</html>

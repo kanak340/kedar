@@ -75,8 +75,55 @@
         <h1>Dashboard</h1>
     </div>
 
-        <div class="content">
-            <p>Welcome to the dashboard.</p>
+    <div class="content">
+        <h3>Market Selection</h3>
+        <label for="primaryMarket">Primary Market</label>
+        <input type="radio" id="primaryMarket" name="market" value="primary" onchange="toggleMarket()">
+        <label for="secondaryMarket">Secondary Market</label>
+        <input type="radio" id="secondaryMarket" name="market" value="secondary" onchange="toggleMarket()"><br><br>
+        
+        <h3>Session Control</h3>
+        <h3>Session Control</h3>
+        <label for="startSession">Start Session</label>
+        <input type="radio" id="startSession" name="session" value="start" onchange="toggleSession()">
+        <label for="endSession">End Session</label>
+        <input type="radio" id="endSession" name="session" value="end" onchange="toggleSession()">
+        <button id="submitButton" onclick="submitChanges()">Submit</button>
+
+
+
+            <script>
+                function toggleMarket() {
+                    const isPrimary = document.getElementById('primaryMarket').checked;
+                    console.log(isPrimary ? 'Primary market activated' : 'Secondary market activated');
+                }
+
+                function toggleSession() {
+                    const isSessionActive = document.getElementById('startSession').checked;
+                    console.log(isSessionActive ? 'Session started' : 'Session ended');
+                }
+
+                function submitChanges() {
+                    const market = document.querySelector('input[name="market"]:checked').value;
+                    const session = document.querySelector('input[name="session"]:checked').value;
+                    console.log(`Market: ${market}, Session: ${session}`);
+                    // Here you can add the logic to send this data to the server
+                }
+            </script>
+
+            <script>
+                function toggleMarket() {
+                    const isPrimary = document.getElementById('primaryMarket').checked;
+                    console.log(isPrimary ? 'Primary market activated' : 'Secondary market activated');
+                }
+
+                function toggleSession() {
+                    const isSessionActive = document.getElementById('startSession').checked;
+                    console.log(isSessionActive ? 'Session started' : 'Session ended');
+                }
+
+            </script>
+
             <p>This is the main dashboard page.</p>
         </div>
     {% endblock %}

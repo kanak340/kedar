@@ -34,8 +34,6 @@
                 <th style="border: 1px solid #dddddd; padding: 8px;">Edit</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">Delete</th>
                 <th style="border: 1px solid #dddddd; padding: 8px;">View Report</th>
-
-
             </tr>
         </thead>
         <tbody>
@@ -63,11 +61,11 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Here you would typically send a request to your API to add the user
             fetch('/api/adduser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
                     uid: uid,
@@ -79,10 +77,8 @@
                 .then(data => {
                     console.log('User added successfully:', data);
                     location.reload();
-                    // Optionally, refresh the user list or clear the form
                 })
                 .catch(error => console.error('Error adding user:', error));
-
         });
 
         function openEditDialog(uid, username, password) {
@@ -114,6 +110,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify({
                         uid: uid,
@@ -125,78 +122,67 @@
                     .then(data => {
                         console.log('User updated successfully:', data);
                         closeModal();
-                        location.reload(); // Refresh the page after editing the user
-
+                        location.reload();
                     })
                     .catch(error => console.error('Error updating user:', error));
-
-                //closeModal();
             });
         }
 
         function deleteUser(uid) {
             fetch(`/api/deleteuser/${uid}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
             })
                 .then(response => response.json())
                 .then(data => {
                     console.log('User deleted successfully:', data);
-                    location.reload(); // Refresh the page after deleting the user
+                    location.reload();
                 })
                 .catch(error => console.error('Error deleting user:', error));
         }
-
-
-
 
         function viewReport(uid) {
             fetch(`/api/getreports`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({ uid: uid })
             })
             .then(response => response.json())
             .then(data => {
                 console.log('Report fetched successfully:', data);
-                window.open(data.document, '_blank'); // Open the document link in a new tab
+                window.open(data.document, '_blank');
             })
             .catch(error => console.error('Error fetching report:', error));
         }
 
-
         function closeModal() {
-
-
-
-
             const modal = document.querySelector('div[style*="fixed"]');
             if (modal) {
                 document.body.removeChild(modal);
             }
         }
 
-
         const loadingIndicator = document.getElementById('loading');
-        loadingIndicator.style.display = 'block'; // Show loading indicator
-        fetch('/api/users')
-
-
-
+        loadingIndicator.style.display = 'block';
+        fetch('/api/users', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
-                loadingIndicator.style.display = 'none'; // Hide loading indicator
+                loadingIndicator.style.display = 'none';
                 const tableBody = document.querySelector('tbody');
-
-
-
                 data.users.forEach(user => {
                     const row = document.createElement('tr');
-                    const password = user.password; // Assuming the API provides the password
-                    const serialNumber = tableBody.children.length + 1; // Calculate serial number based on current row count
+                    const password = user.password;
+                    const serialNumber = tableBody.children.length + 1;
                     row.innerHTML = `<td style="border: 1px solid #dddddd; padding: 8px;">${serialNumber}</td><td style="border: 1px solid #dddddd; padding: 8px;">${user.uid}</td><td style="border: 1px solid #dddddd; padding: 8px;">${user.username}</td><td style="border: 1px solid #dddddd; padding: 8px;">${password}</td><td><button onclick="openEditDialog(${user.uid}, '${user.username}', '${password}')">Edit</button></td><td><button onclick="deleteUser('${user.uid}')">Delete</button></td><td><button onclick="viewReport('${user.uid}')">View Report</button></td>`;
-
                     tableBody.appendChild(row);
                 });
             })
