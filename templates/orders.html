@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div style="padding: 20px; overflow-y: auto; max-height: 90vh;">
+
+    <h1>Order Book</h1>
+    <table id="ordersTable">
+        <style>
+            #ordersTable {
+                width: 100%; /* Make the table take full width */
+                border-collapse: collapse; /* Collapse borders for a cleaner look */
+            }
+            #ordersTable, #ordersTable th, #ordersTable td {
+                border: 1px solid black; /* Add borders to the table, headers, and cells */
+            }
+            #ordersTable th, #ordersTable td {
+                padding: 8px; /* Add padding for better spacing */
+                text-align: left; /* Align text to the left */
+            }
+            #ordersTable th {
+                background-color: #f2f2f2; /* Change header background color */
+            }
+        </style>
+
+    <thead>
+        <tr>
+            <!-- Table headers will be populated here -->
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Order data will be populated here -->
+    </tbody>
+</table>
+
+<script>
+    async function fetchOrders() {
+        try {
+            const response = await fetch('/api/getorders'); // Adjust the API endpoint as necessary
+            const data = await response.json();
+            const orders = data.orders;
+
+            const tableBody = document.querySelector('#ordersTable tbody');
+            const headers = Object.keys(orders[0]); // Get the keys from the first order object
+
+            // Create table headers dynamically
+            const headerRow = document.querySelector('#ordersTable thead tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()); // Set the header text
+
+                headerRow.appendChild(th);
+            });
+
+            tableBody.innerHTML = ''; // Clear existing content
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                headers.forEach(header => {
+                    const cell = document.createElement('td');
+                    cell.textContent = order[header]; // Set the cell text based on the order object
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    }
+
+    // Fetch orders when the page loads
+    window.onload = fetchOrders;
+</script>
+{% endblock %}

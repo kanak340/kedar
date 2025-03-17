@@ -177,5 +177,15 @@ def admin_login():
         logging.error(f"Login error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
 
+@app.route('/api/getorders', methods=['GET'])
+def get_orders():
+    try:
+        response = requests.get(f"{API_BASE_URL}/getorders")
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify(response.json()), 200
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error fetching orders: {str(e)}")
+        return jsonify({'error': 'Failed to fetch orders'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
