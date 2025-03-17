@@ -37,7 +37,12 @@
 <script>
     async function fetchOrders() {
         try {
-            const response = await fetch('/api/getorders'); // Adjust the API endpoint as necessary
+            const response = await fetch('/api/getorders', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }); // Adjust the API endpoint as necessary
+
             const data = await response.json();
             const orders = data.orders;
 
