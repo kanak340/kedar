@@ -101,7 +101,9 @@ def charts():
 
 @app.route('/news')
 def news():
-    return render_template('news.html')
+    response = requests.get(f"{API_BASE_URL}/getallnews")
+    news_data = response.json().get('news', [])
+    return render_template('news.html', news=news_data)
 
 @app.route('/portfolio')
 def portfolio():
