@@ -16,7 +16,9 @@
                 <a href="/orders"><button>Orders</button></a>
                 <a href="/news"><button>News</button></a>
                 <a href="/portfolio"><button>Portfolio</button></a>
-                <a href="#"><button onclick="openPopup()">Calculate</button></a> <!-- Updated button to open popup -->
+                {% if request.path == '/secondaryMarket' %}
+                <a href="#"><button onclick="openPopup()">Calculate</button></a> <!-- Show button only on secondaryMarket page -->
+                {% endif %}
             </div>
 
             <div class="nav-right">
