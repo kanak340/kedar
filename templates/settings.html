@@ -4,12 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
+    <script>
+        async function uploadFile(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const fileInput = document.getElementById('excelFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('YOUR_API_ENDPOINT_HERE', { // Replace with your API endpoint
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    alert('File uploaded successfully!');
+                } else {
+                    alert('Error uploading file.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error uploading file.');
+            }
+        }
+    </script>
 </head>
 <body>
     {% extends 'layoutsAdmin.html' %}
     {% block content %}
     <h1>Settings Page</h1>
-    <p>This is the settings management page.</p>
+ 
+    <form onsubmit="uploadFile(event)">
+        <label for="excelFile">Upload Bonds File:</label>
+        <input type="file" id="excelFile" name="excelFile" accept=".xls,.xlsx" required>
+        <button type="submit">Upload</button>
+    </form>
     {% endblock %}
 </body>
 </html>
