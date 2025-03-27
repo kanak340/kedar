@@ -8,11 +8,11 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # API base URL
-API_BASE_URL = "https://a75b88a9-a538-4ec3-97f4-fbb29750e466.mock.pstmn.io"
+API_BASE_URL = "https://4875c991-9a39-4661-90d6-921cf8eb0028.mock.pstmn.io"
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('charts.html')
 
 @app.route('/adminDashboard')
 def adminDashboard():
@@ -87,6 +87,20 @@ def delete_user(uid):
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/deleteord', methods=['PUT'])
+def delete_order():
+    data = request.get_json()
+    order_id = data.get('order_id')
+    
+    # Send request to delete the order
+    try:
+        response = requests.delete(f"{API_BASE_URL}/deleteord/{order_id}")
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify({'message': 'Order cancelled successfully'}), 200
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error cancelling order: {str(e)}")
+        return jsonify({'error': 'Failed to cancel order'}), 500
+
 @app.route('/users')
 def users():
     return render_template('users.html')
@@ -120,8 +134,6 @@ def get_reports():
         return jsonify(response.json()), 200
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
-
-
 
 @app.route('/api/userlogin', methods=['POST'])
 def user_login():
@@ -176,6 +188,18 @@ def admin_login():
     except requests.exceptions.RequestException as e:
         logging.error(f"Login error: {str(e)}")
         return jsonify({'error': 'Invalid credentials'}), 401
+
+@app.route('/api/getcharts', methods=['GET'])
+def get_charts():
+    try:
+        response = requests.get(f"{API_BASE_URL}/getcharts", headers={
+            'Authorization': f'Bearer {request.headers.get("Authorization")}'
+        })
+        response.raise_for_status()  # Raise an error for bad responses
+        return jsonify(response.json()), 200
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Error fetching charts: {str(e)}")
+        return jsonify({'error': 'Failed to fetch charts'}), 500
 
 @app.route('/api/getorders', methods=['GET'])
 def get_orders():

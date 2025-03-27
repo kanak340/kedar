@@ -26,8 +26,10 @@
 
     <thead>
         <tr>
-            <!-- Table headers will be populated here -->
+          
+
         </tr>
+
     </thead>
     <tbody>
         <!-- Order data will be populated here -->
@@ -67,14 +69,41 @@
                     cell.textContent = order[header]; // Set the cell text based on the order object
                     row.appendChild(cell);
                 });
+                const cancelButton = document.createElement('button');
+                cancelButton.textContent = 'Cancel Order';
+                cancelButton.onclick = async () => {
+                const orderId = order.order_id; // Use 'order_id' as the key for order ID
+
+                    try {
+                        const response = await fetch('/api/order_id', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            },
+                            body: JSON.stringify({ order_id: orderId }) // Send order_id in the request body
+
+                        });
+                        if (response.ok) {
+                            alert('Order cancelled successfully');
+                            fetchOrders(); // Refresh the orders table
+                        } else {
+                            alert('Failed to cancel order');
+                        }
+                    } catch (error) {
+                        console.error('Error cancelling order:', error);
+                    }
+                };
+                const cell = document.createElement('td');
+                cell.appendChild(cancelButton); // Add the button to the cell
+                row.appendChild(cell); // Append the cell to the row
                 tableBody.appendChild(row);
+
             });
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
     }
-
-    // Fetch orders when the page loads
     window.onload = fetchOrders;
 </script>
 {% endblock %}
