@@ -80,12 +80,12 @@
 <body>
     <div class="card">
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('user')">User</div>
-            <div class="tab" onclick="switchTab('admin')">Admin</div>
+            <div class="tab active" onclick="switchTab('user')">Participant</div>
+            <div class="tab" onclick="switchTab('admin')">Instructor</div>
         </div>
         <div id="user-form" class="login-form">
             <div class="form-group">
-                <label>Username</label>
+                <label>Participant ID</label>
                 <input type="text" id="user-username" placeholder="Enter username">
             </div>
             <div class="form-group">
@@ -96,7 +96,7 @@
         </div>
         <div id="admin-form" class="login-form" style="display: none;">
             <div class="form-group">
-                <label>Admin ID</label>
+                <label>Instructor ID</label>
                 <input type="text" id="admin-id" placeholder="Enter Admin ID">
             </div>
             <div class="form-group">

@@ -12,7 +12,7 @@ API_BASE_URL = "https://4875c991-9a39-4661-90d6-921cf8eb0028.mock.pstmn.io"
 
 @app.route('/')
 def index():
-    return render_template('adminDashboard.html')
+    return render_template('login.html')
 
 @app.route('/adminDashboard')
 def adminDashboard():

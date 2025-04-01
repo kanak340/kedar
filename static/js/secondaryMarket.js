@@ -257,8 +257,8 @@ async function renderChart() {
 // Call fillTable, fillOrderBook, fillNews, renderChart, and displayPnL on page load
 window.onload = async () => {
    fillTable();
-   //fillOrderBook();
-   //fillNews(); // Fetch and display news
-   //displayPnL(); // Fetch and display PnL data
-   //renderChart();
+   fillOrderBook();
+   renderChart();
+   fillNews(); // Fetch and display news
+   displayPnL(); // Fetch and display PnL data
 };
